@@ -2500,8 +2500,8 @@ var Main = function Main() {
     setTodos = _useState2[1];
   var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(""),
     _useState4 = _slicedToArray(_useState3, 2),
-    todoDiscription = _useState4[0],
-    setTodoDiscription = _useState4[1];
+    todoDescription = _useState4[0],
+    setTodoDescription = _useState4[1];
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     function fetchTodos() {
       return _fetchTodos.apply(this, arguments);
@@ -2538,17 +2538,24 @@ var Main = function Main() {
         while (1) switch (_context2.prev = _context2.next) {
           case 0:
             e.preventDefault();
-            console.log(todoDiscription);
+            if (!todoDescription.length) {
+              _context2.next = 10;
+              break;
+            }
             _context2.next = 4;
             return axios__WEBPACK_IMPORTED_MODULE_1___default().post("api/todo", {
-              name: todoDiscription
+              name: todoDescription
             });
           case 4:
             _yield$axios$post = _context2.sent;
             data = _yield$axios$post.data;
             setTodos([].concat(_toConsumableArray(todos), [data]));
-            console.log(data);
-          case 8:
+            setTodoDescription("");
+            _context2.next = 11;
+            break;
+          case 10:
+            window.alert("Can't set todo with empty field");
+          case 11:
           case "end":
             return _context2.stop();
         }
@@ -2556,11 +2563,40 @@ var Main = function Main() {
     }));
     return _handleSubmit.apply(this, arguments);
   }
+  function handleDelete(_x3) {
+    return _handleDelete.apply(this, arguments);
+  }
+  function _handleDelete() {
+    _handleDelete = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(todoId) {
+      var _yield$axios$delete, data;
+      return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+        while (1) switch (_context3.prev = _context3.next) {
+          case 0:
+            _context3.next = 2;
+            return axios__WEBPACK_IMPORTED_MODULE_1___default()["delete"]("/api/todo/".concat(todoId));
+          case 2:
+            _yield$axios$delete = _context3.sent;
+            data = _yield$axios$delete.data;
+            setTodos(todos.filter(function (todo) {
+              return todo.id !== data.id;
+            }));
+          case 5:
+          case "end":
+            return _context3.stop();
+        }
+      }, _callee3);
+    }));
+    return _handleDelete.apply(this, arguments);
+  }
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, "This is your todos for today"), todos.length ? todos.map(function (todo) {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
       key: todo.id
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, todo.name));
-  }) : "Loading", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, "Would you like to add more?"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("form", {
+    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, todo.name), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+      onClick: function onClick() {
+        return handleDelete(todo.id);
+      }
+    }, "Delete"));
+  }) : "There are no Todos!", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, "Would you like to add more?"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("form", {
     className: "form",
     id: "add_todo",
     onSubmit: handleSubmit
@@ -2568,13 +2604,13 @@ var Main = function Main() {
     htmlFor: "todoDiscription"
   }, "Todo Description: "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("input", {
     name: "todoDiscription",
-    value: todoDiscription ? todoDiscription : "",
+    value: todoDescription ? todoDescription : "",
     onChange: function onChange(e) {
-      return setTodoDiscription(e.target.value);
+      return setTodoDescription(e.target.value);
     }
-  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
     type: "submit"
-  }, "Submit"));
+  }, "Submit")));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Main);
 

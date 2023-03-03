@@ -3,12 +3,11 @@ import axios from "axios";
 
 const Main = () => {
     const [todos, setTodos] = useState([]);
-    const [todoDiscription, setTodoDiscription] = useState("");
+    const [todoDescription, setTodoDescription] = useState("");
 
     useEffect(() => {
         async function fetchTodos() {
             const { data } = await axios.get("/api/todo");
-
             setTodos(data);
         }
         fetchTodos();
@@ -16,14 +15,21 @@ const Main = () => {
 
     async function handleSubmit(e) {
         e.preventDefault();
-        console.log(todoDiscription);
-        const { data } = await axios.post(`api/todo`, {
-            name: todoDiscription,
-        });
-        setTodos([...todos, data]);
-        console.log(data);
+        if (todoDescription.length) {
+            const { data } = await axios.post(`api/todo`, {
+                name: todoDescription,
+            });
+            setTodos([...todos, data]);
+            setTodoDescription("");
+        } else {
+            window.alert("Can't set todo with empty field");
+        }
     }
-    
+
+    async function handleDelete(todoId) {
+        const { data } = await axios.delete(`/api/todo/${todoId}`);
+        setTodos(todos.filter((todo) => todo.id !== data.id));
+    }
 
     return (
         <div>
@@ -33,20 +39,23 @@ const Main = () => {
                       return (
                           <div key={todo.id}>
                               <div>{todo.name}</div>
+                              <button onClick={() => handleDelete(todo.id)}>
+                                  Delete
+                              </button>
                           </div>
                       );
                   })
-                : "Loading"}
+                : "There are no Todos!"}
             <div>Would you like to add more?</div>
             <form className="form" id="add_todo" onSubmit={handleSubmit}>
                 <label htmlFor="todoDiscription">Todo Description: </label>
                 <input
                     name="todoDiscription"
-                    value={todoDiscription ? todoDiscription : ""}
-                    onChange={(e) => setTodoDiscription(e.target.value)}
+                    value={todoDescription ? todoDescription : ""}
+                    onChange={(e) => setTodoDescription(e.target.value)}
                 ></input>
+                <button type="submit">Submit</button>
             </form>
-            <button type="submit">Submit</button>
         </div>
     );
 };
