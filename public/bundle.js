@@ -2502,13 +2502,17 @@ var Main = function Main() {
     _useState4 = _slicedToArray(_useState3, 2),
     todoDescription = _useState4[0],
     setTodoDescription = _useState4[1];
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
+    _useState6 = _slicedToArray(_useState5, 2),
+    joke = _useState6[0],
+    setJoke = _useState6[1];
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     function fetchTodos() {
       return _fetchTodos.apply(this, arguments);
     }
     function _fetchTodos() {
       _fetchTodos = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-        var _yield$axios$get, data;
+        var _yield$axios$get, data, _yield$axios$get2, value;
         return _regeneratorRuntime().wrap(function _callee$(_context) {
           while (1) switch (_context.prev = _context.next) {
             case 0:
@@ -2517,8 +2521,14 @@ var Main = function Main() {
             case 2:
               _yield$axios$get = _context.sent;
               data = _yield$axios$get.data;
+              _context.next = 6;
+              return axios__WEBPACK_IMPORTED_MODULE_1___default().get('https://api.chucknorris.io/jokes/random');
+            case 6:
+              _yield$axios$get2 = _context.sent;
+              value = _yield$axios$get2.data.value;
               setTodos(data);
-            case 5:
+              setJoke(value);
+            case 10:
             case "end":
               return _context.stop();
           }
@@ -2588,7 +2598,7 @@ var Main = function Main() {
     }));
     return _handleDelete.apply(this, arguments);
   }
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, "This is your todos for today"), todos.length ? todos.map(function (todo) {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, "This is your todos for today, and here's a joke: ", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("br", null), joke), todos.length ? todos.map(function (todo) {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
       key: todo.id
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, todo.name), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {

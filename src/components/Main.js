@@ -4,11 +4,14 @@ import axios from "axios";
 const Main = () => {
     const [todos, setTodos] = useState([]);
     const [todoDescription, setTodoDescription] = useState("");
+    const [joke, setJoke] = useState('')
 
     useEffect(() => {
         async function fetchTodos() {
             const { data } = await axios.get("/api/todo");
+            const {data:{value}} = await axios.get('https://api.chucknorris.io/jokes/random')
             setTodos(data);
+            setJoke(value)
         }
         fetchTodos();
     }, []);
@@ -33,7 +36,7 @@ const Main = () => {
 
     return (
         <div>
-            <div>This is your todos for today</div>
+            <div>This is your todos for today, and here's a joke: <br/>{joke}</div>
             {todos.length
                 ? todos.map((todo) => {
                       return (
