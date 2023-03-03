@@ -1,7 +1,7 @@
 {
-  "name": "default Boilerplate",
+  "name": "Todo App",
   "version": "0.0.1",
-  "description": "A review time project",
+  "description": "Everyone has to make it at least once",
   "main": "index.js",
   "scripts": {
     "start": "npm run build-watch & npm run start-server ",
