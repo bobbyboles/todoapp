@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const Todo = require('../db/todo')
+const { Todo } = require('../db/')
 
 router.get('/', async (req, res, next) =>{
     try{
@@ -7,7 +7,7 @@ router.get('/', async (req, res, next) =>{
     res.send(todos)
     }
     catch(err){
-        console.log(error)
+        console.log(err)
     }
 })
 
