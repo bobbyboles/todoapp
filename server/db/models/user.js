@@ -1,6 +1,7 @@
 const Sequelize = require("sequelize");
 const db = require("../db");
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 
 const User = db.define("user", {
     username: {
@@ -27,10 +28,11 @@ User.prototype.correctPassword = function (candidatePwd) {
 };
 
 User.prototype.generateToken = function () {
-    return jwt({ id: this.id }, "shh");
+    return jwt.sign({ id: this.id }, "shh");
 };
 
 User.authenticate = async function ({ username, password }) {
+    console.log(username, password)
     const user = await this.findOne({ where: { username } });
     if (!user || !(await user.correctPassword(password))) {
         const error = Error("Incorrect Username / Password");

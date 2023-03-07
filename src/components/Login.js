@@ -1,14 +1,19 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import SignUp from "./SignUp";
+import axios from "axios";
+
 
 const AuthForm = () => {
 
     const handleSubmit = async (evt) => {
         evt.preventDefault();
-        const formName = evt.target.name;
         const username = evt.target.username.value;
         const password = evt.target.password.value;
+        console.log( username, password )
+        const { data } = await axios.post('/api/auth/login', { username, password })
+        window.localStorage.setItem('token', data.token)
+
 
 
 

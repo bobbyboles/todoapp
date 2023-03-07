@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const SignUp = () => {
     const [username, setUsername] = useState('');
@@ -8,13 +9,11 @@ const SignUp = () => {
 
     const navigate = useNavigate();
 
-    const handleSubmit = (evt) => {
+    const handleSubmit = async(evt) => {
         evt.preventDefault()
-        let addUser = {
-            username: username,
-            password: password,
-            email: email,
-        }
+        const { data } = await axios.post('/api/auth/signup', {username, password, email})
+        console.log(data)
+        window.localStorage.setItem('token', data.token)
       }
 
     return(
