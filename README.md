@@ -1,2 +1,1 @@
-It's the todo app!
-This is some new content for the README.md file
+This is the README for the todo APP
