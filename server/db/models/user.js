@@ -3,9 +3,7 @@ const db = require("../db");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const argon2 = require("argon2");
-const {
-    V4: { sign, verify },
-} = require("paseto");
+const { V4: PasetoV4 } = require("paseto");
 const crypto = require("crypto");
 
 const User = db.define("user", {
@@ -54,22 +52,8 @@ module.exports = User;
 //     }
 // );
 //
-const { publicKey, privateKey } = crypto.generateKeyPairSync("rsa", {
-    modulusLength: 4096,
-    publicKeyEncoding: {
-        type: "spki",
-        format: "pem",
-    },
-    privateKeyEncoding: {
-        type: "pkcs8",
-        format: "pem",
-        cipher: "aes-256-cbc",
-        passphrase: "top secret",
-    },
-});
-
-console.log(privateKey, "server start")
-console.log(publicKey, "this is the public key")
+const { publicKey, privateKey } = crypto.generateKeyPairSync("ed25519");
+// const pasetoV4 = new PasetoV4()
 
 User.prototype.correctPassword = function (candidatePwd) {
     return argon2.verify(this.password, candidatePwd);
@@ -87,14 +71,14 @@ User.authenticate = async function ({ username, password }) {
 };
 User.prototype.generateToken = async function () {
     console.log(privateKey.toString("hex"), "Private Key in generate");
-    return jwt.sign({ id: this.id }, privateKey);
+    return PasetoV4.sign({ id: this.id }, privateKey);
 };
 
 User.findByToken = async function (token) {
     try {
         console.log(publicKey, "public key in findBy");
-        const { id } = jwt.verify(token, privateKey);
-        const user = User.findByPk(id);
+        const { id } = await PasetoV4.verify(token, publicKey);
+        const user = await User.findByPk(id);
         if (!user) {
             throw "noo";
         }
